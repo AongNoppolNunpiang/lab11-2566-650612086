@@ -84,7 +84,7 @@ export default function RegisFormPage() {
 
     if (plan === "") {
       planOk = false;
-      setFnameError(true);
+      setPlanFail(true);
     }
 
     if (lname === "") {
