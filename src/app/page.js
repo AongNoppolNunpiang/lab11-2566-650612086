@@ -97,7 +97,7 @@ export default function RegisFormPage() {
       setGenderFail(true);
     }
 
-    if (fnameOk) {
+    if (fnameOk && lnameOk && planOk && genderOk) {
       alert(
         `Registration complete. Please pay money for ${computeTotalPayment().toLocaleString()} THB.`
       );
@@ -121,7 +121,7 @@ export default function RegisFormPage() {
         <div>
           <label className="form-label">Last name</label>
           <input
-            className="form-control"
+            className={"form-control" + (lnameFail ? "is-invalid" : "")}
             onChange={inputLnameOnChange}
             value={lname}
           />
@@ -133,7 +133,7 @@ export default function RegisFormPage() {
       <div>
         <label className="form-label">Plan</label>
         <select
-          className="form-select"
+          className={"form-select" + (planFail ? "is-invalid" : "")}
           onChange={selectPlanOnChange}
           value={plan}
         >
@@ -151,7 +151,7 @@ export default function RegisFormPage() {
         <label className="form-label">Gender</label>
         <div>
           <input
-            className="me-2 form-check-input"
+            className={"me-2 form-check-input"}
             type="radio"
             onChange={radioGenderMaleOnChange}
             checked={gender === "male"}
@@ -218,8 +218,8 @@ export default function RegisFormPage() {
 
       {/* Terms and conditions */}
       <div>
-        <input className="me-2" type="checkbox" />I agree to the terms and
-        conditions
+        <input className="me-2" type="checkbox" onClick={cbUserAccept} />I agree
+        to the terms and conditions
       </div>
 
       {/* Register Button */}
@@ -227,7 +227,7 @@ export default function RegisFormPage() {
         className="btn btn-success my-2"
         onClick={registerBtnOnClick}
         //You can embbed a state like below to disabled the button
-        //disabled={isUserAgreed}
+        disabled={!isUserAgreed}
       >
         Register
       </button>
