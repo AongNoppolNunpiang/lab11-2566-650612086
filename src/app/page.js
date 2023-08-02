@@ -5,11 +5,15 @@ export default function RegisFormPage() {
   const [fname, setFname] = useState("");
   const [fnameError, setFnameError] = useState(false);
   const [lname, setLname] = useState("");
+  const [lnameFail, setLnameFail] = useState(false);
   const [plan, setPlan] = useState("");
+  const [planFail, setPlanFail] = useState(false);
   const [gender, setGender] = useState(null);
+  const [genderFail, setGenderFail] = useState(false);
   const [buyBottle, setBuyBottle] = useState(false);
   const [buyShoes, setBuyShoes] = useState(false);
   const [buyCap, setBuyCap] = useState(false);
+  const [UserAccept, setUserAccept] = useState(false);
 
   const inputFnameOnChange = (event) => {
     setFnameError(false);
@@ -17,18 +21,22 @@ export default function RegisFormPage() {
   };
 
   const inputLnameOnChange = (event) => {
+    setLnameFail(false);
     setLname(event.target.value);
   };
 
   const selectPlanOnChange = (event) => {
+    setPlanFail(false);
     setPlan(event.target.value);
   };
 
   const radioGenderMaleOnChange = () => {
+    setGenderFail(false);
     setGender("male");
   };
 
   const radioGenderFemaleOnChange = () => {
+    setGenderFail(false);
     setGender("female");
   };
 
@@ -44,6 +52,10 @@ export default function RegisFormPage() {
     setBuyCap(event.target.checked);
   };
 
+  const cbUserAccept = (event) => {
+    setUserAccept(event.target.checked);
+  };
+
   function computeTotalPayment() {
     let total = 0;
     if (plan === "funrun") total += 500;
@@ -53,15 +65,36 @@ export default function RegisFormPage() {
     if (buyBottle) total += 200;
     if (buyShoes) total += 600;
     if (buyCap) total += 400;
-
-    return total;
+    if (buyBottle && buyShoes && buyCap) {
+      return (total = total - (total * 20) / 100);
+    } else {
+      return;
+    }
   }
 
   const registerBtnOnClick = () => {
     let fnameOk = true;
+    let lnameOk = true;
+    let planOk = true;
+    let genderOk = true;
     if (fname === "") {
       fnameOk = false;
       setFnameError(true);
+    }
+
+    if (plan === "") {
+      planOk = false;
+      setFnameError(true);
+    }
+
+    if (lname === "") {
+      lnameOk = false;
+      setLnameFail(true);
+    }
+
+    if (gender === null) {
+      genderOk = false;
+      setGenderFail(true);
     }
 
     if (fnameOk) {
@@ -135,6 +168,7 @@ export default function RegisFormPage() {
           {/* We just have to render the div below (Not using is-invalid bootstrap class) */}
           {/* <div className="text-danger">Please select gender</div> */}
         </div>
+        {genderFail && <div className="text-danger">Please select gender</div>}
       </div>
 
       {/* Extra Items */}
@@ -177,7 +211,9 @@ export default function RegisFormPage() {
       <div>
         Total Payment : {computeTotalPayment().toLocaleString()} THB
         {/* Render below element conditionally when user get 20% discount */}
-        {/* <span className="text-success d-block">(20% Discounted)</span> */}
+        {buyBottle && buyShoes && buyCap && (
+          <span className="text-success d-block">(20% Discounted)</span>
+        )}
       </div>
 
       {/* Terms and conditions */}
