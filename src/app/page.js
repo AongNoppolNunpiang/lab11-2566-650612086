@@ -5,15 +5,15 @@ export default function RegisFormPage() {
   const [fname, setFname] = useState("");
   const [fnameError, setFnameError] = useState(false);
   const [lname, setLname] = useState("");
-  const [lnameFail, setLnameFail] = useState(false);
+  const [lnameError, setLnameError] = useState(false);
   const [plan, setPlan] = useState("");
-  const [planFail, setPlanFail] = useState(false);
+  const [planError, setPlanError] = useState(false);
   const [gender, setGender] = useState(null);
-  const [genderFail, setGenderFail] = useState(false);
+  const [genderError, setGenderError] = useState(false);
   const [buyBottle, setBuyBottle] = useState(false);
   const [buyShoes, setBuyShoes] = useState(false);
   const [buyCap, setBuyCap] = useState(false);
-  const [UserAccept, setUserAccept] = useState(false);
+  const [isUserAgreed, setUserAgreed] = useState(false);
 
   const inputFnameOnChange = (event) => {
     setFnameError(false);
@@ -21,22 +21,22 @@ export default function RegisFormPage() {
   };
 
   const inputLnameOnChange = (event) => {
-    setLnameFail(false);
+    setLnameError(false);
     setLname(event.target.value);
   };
 
   const selectPlanOnChange = (event) => {
-    setPlanFail(false);
+    setPlanError(false);
     setPlan(event.target.value);
   };
 
   const radioGenderMaleOnChange = () => {
-    setGenderFail(false);
+    setGenderError(false);
     setGender("male");
   };
 
   const radioGenderFemaleOnChange = () => {
-    setGenderFail(false);
+    setGenderError(false);
     setGender("female");
   };
 
@@ -52,8 +52,8 @@ export default function RegisFormPage() {
     setBuyCap(event.target.checked);
   };
 
-  const cbUserAccept = (event) => {
-    setUserAccept(event.target.checked);
+  const cbUserAgreed = (event) => {
+    setUserAgreed(event.target.checked);
   };
 
   function computeTotalPayment() {
@@ -68,7 +68,7 @@ export default function RegisFormPage() {
     if (buyBottle && buyShoes && buyCap) {
       return (total = total - (total * 20) / 100);
     } else {
-      return;
+      return total;
     }
   }
 
@@ -82,19 +82,19 @@ export default function RegisFormPage() {
       setFnameError(true);
     }
 
-    if (plan === "") {
-      planOk = false;
-      setPlanFail(true);
-    }
-
     if (lname === "") {
       lnameOk = false;
-      setLnameFail(true);
+      setLnameError(true);
+    }
+
+    if (plan === "") {
+      planOk = false;
+      setPlanError(true);
     }
 
     if (gender === null) {
       genderOk = false;
-      setGenderFail(true);
+      setGenderError(true);
     }
 
     if (fnameOk && lnameOk && planOk && genderOk) {
@@ -121,7 +121,7 @@ export default function RegisFormPage() {
         <div>
           <label className="form-label">Last name</label>
           <input
-            className={"form-control" + (lnameFail ? "is-invalid" : "")}
+            className={"form-control" + (lnameError ? " is-invalid" : "")}
             onChange={inputLnameOnChange}
             value={lname}
           />
@@ -133,7 +133,7 @@ export default function RegisFormPage() {
       <div>
         <label className="form-label">Plan</label>
         <select
-          className={"form-select" + (planFail ? "is-invalid" : "")}
+          className={"form-select" + (planError ? " is-invalid" : "")}
           onChange={selectPlanOnChange}
           value={plan}
         >
@@ -168,7 +168,7 @@ export default function RegisFormPage() {
           {/* We just have to render the div below (Not using is-invalid bootstrap class) */}
           {/* <div className="text-danger">Please select gender</div> */}
         </div>
-        {genderFail && <div className="text-danger">Please select gender</div>}
+        {genderError && <div className="text-danger">Please select gender</div>}
       </div>
 
       {/* Extra Items */}
@@ -218,7 +218,7 @@ export default function RegisFormPage() {
 
       {/* Terms and conditions */}
       <div>
-        <input className="me-2" type="checkbox" onClick={cbUserAccept} />I agree
+        <input className="me-2" type="checkbox" onClick={cbUserAgreed} />I agree
         to the terms and conditions
       </div>
 
